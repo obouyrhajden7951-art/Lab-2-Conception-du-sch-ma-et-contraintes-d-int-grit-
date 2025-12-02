@@ -1,0 +1,37 @@
+CREATE DATABASE IF NOT EXISTS bibliotheque
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+USE bibliotheque;
+
+CREATE TABLE auteur (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nom VARCHAR(100) NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE ouvrage (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  titre VARCHAR(200) NOT NULL,
+  disponible BOOLEAN NOT NULL DEFAULT TRUE,
+  auteur_id INT NOT NULL,
+  FOREIGN KEY (auteur_id) REFERENCES auteur(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE abonne (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nom VARCHAR(100) NOT NULL,
+  email VARCHAR(150) NOT NULL UNIQUE
+) ENGINE=InnoDB;
+
+CREATE TABLE emprunt (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  ouvrage_id INT NOT NULL,
+  abonne_id INT NOT NULL,
+  date_debut DATE NOT NULL DEFAULT CURRENT_DATE,
+  date_fin DATE,
+  FOREIGN KEY (ouvrage_id) REFERENCES ouvrage(id) ON DELETE RESTRICT,
+  FOREIGN KEY (abonne_id) REFERENCES abonne(id) ON DELETE CASCADE,
+  CHECK (date_fin IS NULL OR date_fin >= date_debut)
+) ENGINE=InnoDB;
+
+ALTER TABLE ouvrage ADD INDEX (disponible);
+ALTER TABLE emprunt ADD INDEX (date_fin);
