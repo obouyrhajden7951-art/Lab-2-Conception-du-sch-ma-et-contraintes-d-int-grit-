@@ -1,6 +1,7 @@
 # Lab-2-Conception-du-sch-ma-et-contraintes-d-int-grit-
        # Étape 1 – Analyse du besoin métier
             Entités et attributs :
+
     Auteur : nom
     Ouvrage : titre, disponibilité
     Abonné : nom, email
